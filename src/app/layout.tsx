@@ -10,6 +10,7 @@ import {
   development,
 } from "@lens-protocol/react-web";
 import { bindings as wagmiBindings } from "@lens-protocol/wagmi";
+import Navbar from "@/components/ui/Navbar";
 
 const { publicClient, webSocketPublicClient } = configureChains(
   [polygon, polygonMumbai],
@@ -43,7 +44,10 @@ export default function RootLayout({
     <html lang="en">
       <WagmiConfig config={config}>
         <LensProvider config={lensConfig}>
-          <body>{children}</body>
+          <body className="min-h-screen bg-gradient-to-b from-purplePrimary to-black">
+            <Navbar />
+            <div>{children}</div>
+          </body>
         </LensProvider>
       </WagmiConfig>
     </html>
