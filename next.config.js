@@ -12,6 +12,11 @@ const nextConfig = {
         hostname: "test.com",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "lens.infura-ipfs.io",
+        port: "",
+      },
     ],
   },
 };

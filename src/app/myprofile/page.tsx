@@ -28,6 +28,7 @@ export default function MyProfile() {
   return (
     <div>
       <p>Active profile: {data.handle}</p>
+      <p>Active profile: {data.id}</p>
     </div>
   );
 }
