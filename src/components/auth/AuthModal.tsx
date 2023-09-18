@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   Dialog,
@@ -6,29 +6,78 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
+import { useAuth } from "@/context/LensContext";
+import { useRouter } from "next/navigation";
 
 export default function AuthModal() {
   const [open, setOpen] = React.useState(false);
+  // @ts-ignore
+  const { loginUser, wallet, logoutUser, activeProfileData } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (activeProfileData === null) {
+      router.push("/create");
+      // setOpen(true);
+    }
+  }, []);
 
   const handleOpen = () => setOpen(!open);
 
   return (
     <div>
-      <Button
-        onClick={handleOpen}
-        variant="gradient"
-        color="white"
-        className=" rounded-md"
-      >
-        Login
-      </Button>
+      {wallet ? (
+        <Button
+          onClick={logoutUser}
+          variant="gradient"
+          color="red"
+          className=" rounded-md"
+        >
+          Logout
+        </Button>
+      ) : (
+        // <Button
+        //   onClick={handleOpen}
+        //   variant="gradient"
+        //   color="white"
+        //   className=" rounded-md"
+        // >
+        //   Login
+        // </Button>
+        <Button
+          onClick={loginUser}
+          variant="gradient"
+          color="white"
+          className=" rounded-md"
+        >
+          Login
+        </Button>
+      )}
       <Dialog open={open} handler={handleOpen}>
         <DialogHeader>Its a simple dialog.</DialogHeader>
         <DialogBody divider>
-          The key to more success is to have a lot of pillows. Put it this way,
-          it took me twenty five years to get these plants, twenty five years of
-          blood sweat and tears, and I&apos;m never giving up, I&apos;m just
-          getting started. I&apos;m up to something. Fan luv.
+          {wallet ? (
+            <div>
+              <p>You are logged in {wallet.address}</p>
+              <Button
+                onClick={logoutUser}
+                variant="gradient"
+                color="red"
+                className=" rounded-md"
+              >
+                Logout
+              </Button>
+            </div>
+          ) : (
+            <Button
+              onClick={loginUser}
+              variant="gradient"
+              color="white"
+              className=" rounded-md"
+            >
+              Login
+            </Button>
+          )}
         </DialogBody>
         <DialogFooter>
           <Button

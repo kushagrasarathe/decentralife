@@ -12,6 +12,14 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+const AUTHENTICATE_USER = gql`
+  query Challenge($address: String!) {
+    challenge(request: { address: $address }) {
+      text
+    }
+  }
+`;
+
 const GET_PUBLICATIONS = gql`
   query Publications($profileId: ProfileId!) {
     publications(
@@ -368,6 +376,21 @@ const GET_PUBLICATIONS = gql`
     }
   }
 `;
+
+export const getAuthenticationChallenge = async (address: string) => {
+  return await client
+    .query({
+      query: AUTHENTICATE_USER,
+      variables: { profileId: address },
+    })
+    .then((data) => {
+      console.log(data);
+      // return data.data.publications.items;
+    })
+    .catch((err) => {
+      console.log("Error fetching data: ", err);
+    });
+};
 
 export const getPublications = async (profileId: any) => {
   return await client
