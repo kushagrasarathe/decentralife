@@ -1,16 +1,5 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client";
-import { ProfileId } from "@lens-protocol/react-web";
-import {
-  CreatePostTypedDataDocument,
-  CreatePublicPostRequest,
-} from "@gql/generated";
-import { signedTypeData } from "@/utils/ethers.service";
-
-// interface Porps {
-//     ProfileId: ProfileId
-// }
 
 const client = new ApolloClient({
   uri: "https://api-mumbai.lens.dev/",
