@@ -1,107 +1,93 @@
-// app/page.tsx
 "use client";
-import { LoginButton, LogoutButton } from "@/components/WalletConnect";
-import {
-  PublicationTypes,
-  useActiveWallet,
-  useExploreProfiles,
-} from "@lens-protocol/react-web";
-import Image from "next/image";
-import Link from "next/link";
-import MyProfile from "./myprofile/page";
-import Post from "@/components/publications/Post";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { FC, useEffect, useState } from "react";
-import { Spinner } from "@material-tailwind/react";
-import { usePublications } from "@lens-protocol/react-web";
-import { getPublications } from "@/apollo";
-import image from "@assets/pfp.png";
-import CreatePost from "@/components/publications/CreatePost";
+
 import { useAuth } from "@/context/LensContext";
+import {
+  PublicationSortCriteria,
+  PublicationTypes,
+  useActiveProfile,
+  useExplorePublications,
+  useProfilesOwnedByMe,
+} from "@lens-protocol/react-web";
+import Link from "next/link";
+import { useExploreProfiles } from "@lens-protocol/react-web";
+import UserProfile from "@/components/ui/UserProfileCard";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { InfiniteLoader } from "@/components/ui/InfiniteLoader";
 
 export default function Home() {
-  const [posts, setPosts] = useState<any>([]);
-  const {
-    data: publication,
-    loading,
-    hasMore,
-    next,
-  } = usePublications({
-    // @ts-ignore
-    profileId: "0x77-0x0149",
-    limit: 10,
-  });
-
+  const { data, error, loading } = useActiveProfile();
   // @ts-ignore
-  const { activeProfileData } = useAuth();
+  // const { feedItems } = useAuth();
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      // 0x9185
-      const publications = await getPublications("0x9185");
-      if (publications !== undefined) {
-        setPosts(publications);
-      }
-    };
-    fetchPosts();
-  }, []);
+  // const {
+  //   data: publications,
+  //   loading: postsLoading,
+  //   hasMore,
+  //   next,
+  // } = useExplorePublications({
+  //   sortCriteria: PublicationSortCriteria.TopCommented,
+  //   publicationTypes: [PublicationTypes.Comment, PublicationTypes.Post],
+  // });
+  const { data: userProfiles, loading: userProfilesLoading } =
+    useExploreProfiles();
+
   const loadMore = async () => {};
+
+  // if (loading) return <p>Loading...</p>;
+
+  // if (error) return <p>Error: {error.message}</p>;
+
+  // if (data === null)
+  //   return (
+  //     <div>
+  //       <div>
+  //         No active profile found please{" "}
+  //         <Link href={"/create"} className=" underline">
+  //           create account
+  //         </Link>
+  //       </div>
+  //     </div>
+  //   );
 
   return (
     <div>
-      <div className=" text-center flex items-center justify-center">
-        <CreatePost publisher={activeProfileData} />
-      </div>
-      <div className="  md:w-7/12 mx-auto mt-8  border border-b-0 rounded-b-none border-borderPrimary rounded-2xl">
-        {posts.length === 0 ? (
-          <div className=" text-center min-h-[90vh] flex items-center justify-center">
-            No posts found
-          </div>
-        ) : (
-          <InfiniteScroll
-            dataLength={[]?.length ?? 0}
-            scrollThreshold={0.99}
-            hasMore={true}
-            next={loadMore}
-            style={{
-              height: "100%",
-              // overflow: "auto",
-              overflow: "visible",
-              // "-webkit-overflow-scrolling": "none",
-            }}
-            loader={<InfiniteLoader />}
-          >
-            {posts &&
-              posts.map((post: any, id: number) => (
+      {/* <p>Active profile: {data.handle}</p>
+      <p>Active profile: {data.id}</p> */}
+      <div className=" md:mb-10  md:w-7/12 mx-auto mt-8  border border-b-0 rounded-b-none border-borderPrimary rounded-2xl">
+        <InfiniteScroll
+          dataLength={[]?.length ?? 0}
+          scrollThreshold={0.99}
+          hasMore={true}
+          next={loadMore}
+          style={{
+            height: "100%",
+            // overflow: "auto",
+            overflow: "visible",
+            // "-webkit-overflow-scrolling": "none",
+          }}
+          loader={<InfiniteLoader />}
+        >
+          {userProfiles?.map(
+            (profile, id) =>
+              profile && (
                 <div key={id}>
-                  <Post
-                    pfp={
-                      post.profile.coverPicture !== null
-                        ? post.profile.coverPicture.original.url
-                        : image
-                    }
-                    name={post.profile.name}
-                    username={post.profile.handle}
-                    postMessage={
-                      post.metadata.description !== null
-                        ? post.metadata.description
-                        : post.metadata.content
-                    }
-                    // postImage={}
+                  <UserProfile
+                    // @ts-ignore
+                    id={profile.id}
+                    pfp={profile.coverPicture}
+                    name={profile.name}
+                    handle={profile.handle}
+                    bio={profile.bio}
                   />
                 </div>
-              ))}
-          </InfiniteScroll>
-        )}
+              )
+          )}
+        </InfiniteScroll>
       </div>
+      {/* {publications?.map((publication, id) => (
+        <div key={id}>{publication.id}</div>
+      ))} */}
+      {/* {activeProfileData.handle} */}
     </div>
   );
 }
-
-const InfiniteLoader: FC = () => {
-  return (
-    <span className="flex justify-center p-5">
-      <Spinner />
-    </span>
-  );
-};

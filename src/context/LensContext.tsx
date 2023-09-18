@@ -1,6 +1,7 @@
 import {
   useActiveProfile,
   useActiveWallet,
+  useFeed,
   useWalletLogin,
   useWalletLogout,
 } from "@lens-protocol/react-web";
@@ -28,6 +29,7 @@ export function LensContextProvider({ children }) {
     error,
     loading: activeProfileLoading,
   } = useActiveProfile();
+
   const { execute: logoutUser, isPending: isLogoutPending } = useWalletLogout();
 
   const { isConnected } = useAccount();
@@ -68,6 +70,10 @@ export function LensContextProvider({ children }) {
         wallet,
         userWalletAddress,
         activeProfileData,
+        // feedItems,
+        // feedLoading,
+        // hasMore,
+        // nextFeed,
       }}
     >
       {children}

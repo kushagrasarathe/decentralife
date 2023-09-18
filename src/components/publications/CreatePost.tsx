@@ -16,6 +16,7 @@ import {
   DialogFooter,
 } from "@material-tailwind/react";
 import { useAuth } from "@/context/LensContext";
+import { useRouter } from "next/navigation";
 
 export default function CreatePost({
   publisher,
@@ -38,15 +39,20 @@ export default function CreatePost({
     error: fallbackError,
     isPending: fallbackInProgress,
   } = useSelfFundedFallback();
+  const router = useRouter();
 
-  async function test() {
+  async function createNewPost() {
     const subsidizedAttempt = await post({
       content: postMessage,
       contentFocus: ContentFocus.TEXT_ONLY,
       locale: "en",
     });
 
-    console.log(subsidizedAttempt);
+    if (subsidizedAttempt.isSuccess()) {
+      setOpen(false);
+      toast.success("Post created");
+      router.refresh();
+    }
   }
 
   const isPending = isPosting || fallbackInProgress;
@@ -63,7 +69,7 @@ export default function CreatePost({
         Create Post
       </Button>
       {/* <Button
-        onClick={test}
+        onClick={createNewPost}
         variant="gradient"
         color="green"
         className=" rounded-md"
@@ -72,8 +78,8 @@ export default function CreatePost({
       </Button> */}
 
       <Dialog open={open} handler={handleOpen}>
-        <DialogHeader>Its a simple dialog.</DialogHeader>
-        <DialogBody divider>
+        <DialogHeader>Create a post</DialogHeader>
+        <DialogBody divider className=" m-0 p-0">
           <textarea
             value={postMessage}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -86,26 +92,15 @@ export default function CreatePost({
             placeholder="What's happening?"
             style={{ resize: "none" }}
             disabled={isPending}
+            className=" w-full borde p-4 rounded-xl outline-none ring-0 font-semibold text-gray-900"
           ></textarea>
-
-          <Button
-            onClick={test}
-            // onClick={createPostRequest}
-            // onClick={() => submit(postMessage)}
-            color="blue"
-            variant="gradient"
-            type="button"
-            disabled={isPending}
-          >
-            Post
-          </Button>
 
           {!isPosting && postError && <pre>{postError.message}</pre>}
           {!fallbackInProgress && fallbackError && (
             <pre>{fallbackError.message}</pre>
           )}
         </DialogBody>
-        <DialogFooter>
+        <DialogFooter className=" mt-0">
           <Button
             variant="text"
             color="red"
@@ -114,7 +109,7 @@ export default function CreatePost({
           >
             <span>Cancel</span>
           </Button>
-          <Button variant="gradient" color="green" onClick={handleOpen}>
+          <Button onClick={createNewPost} variant="gradient" color="green">
             <span>Confirm</span>
           </Button>
         </DialogFooter>

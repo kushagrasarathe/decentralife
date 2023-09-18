@@ -32,17 +32,17 @@ async function getBundlr() {
 }
 
 export async function upload(data: unknown): Promise<string> {
-  const confirm = window.confirm(
-    `In this example we will now upload metadata file via the Bundlr Network.
+  // const confirm = window.confirm(
+  //   `In this example we will now upload metadata file via the Bundlr Network.
   
-  Please make sure your wallet is connected to the Polygon Mumbai testnet.
+  // Please make sure your wallet is connected to the Polygon Mumbai testnet.
   
-  You can get some Mumbai MATIC from the Mumbai Faucet: https://mumbaifaucet.com/`
-  );
+  // You can get some Mumbai MATIC from the Mumbai Faucet: https://mumbaifaucet.com/`
+  // );
 
-  if (!confirm) {
-    throw new Error("User cancelled");
-  }
+  // if (!confirm) {
+  //   throw new Error("User cancelled");
+  // }
 
   const bundlr = await getBundlr();
 

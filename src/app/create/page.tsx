@@ -85,15 +85,15 @@ export default function CreateProfileForm() {
           <label className=" text-lg">
             Enter a profile handle:
             <br />
-            <Input
-              color="white"
+            <input
+              // color="white"
               name="handle"
               minLength={5}
               maxLength={31}
               required
               type="text"
               disabled={isPending}
-              label="Username"
+              // label="Username"
             />
           </label>
 

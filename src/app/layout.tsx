@@ -12,6 +12,7 @@ import {
 import { bindings as wagmiBindings } from "@lens-protocol/wagmi";
 import Navbar from "@/components/ui/Navbar";
 import { LensContextProvider } from "@/context/LensContext";
+import { Toaster } from "react-hot-toast";
 
 const { publicClient, webSocketPublicClient } = configureChains(
   [polygon, polygonMumbai],
@@ -48,6 +49,7 @@ export default function RootLayout({
           <LensContextProvider>
             <body className="min-h-screen bg-gradient-to-b from-purplePrimary to-black">
               <Navbar />
+              <Toaster position="bottom-center" />
               <div>{children}</div>
             </body>
           </LensContextProvider>
