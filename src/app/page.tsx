@@ -16,6 +16,8 @@ import { Spinner } from "@material-tailwind/react";
 import { usePublications } from "@lens-protocol/react-web";
 import { getPublications } from "@/apollo";
 import image from "@assets/pfp.png";
+import CreatePost from "@/components/publications/CreatePost";
+import { useAuth } from "@/context/LensContext";
 
 export default function Home() {
   const [posts, setPosts] = useState<any>([]);
@@ -30,6 +32,9 @@ export default function Home() {
     limit: 10,
   });
 
+  // @ts-ignore
+  const { activeProfileData } = useAuth();
+
   useEffect(() => {
     const fetchPosts = async () => {
       // 0x9185
@@ -40,99 +45,55 @@ export default function Home() {
     };
     fetchPosts();
   }, []);
-  // const { data: wallet, loading } = useActiveWallet();
-  // const { data: profiles } = useExploreProfiles({
-  //   limit: 25,
-  // });
-
-  // if (loading) {
-  //   return (
-  //     <div className=" flex gap-y-4 flex-col items-center justify-center min-h-screen">
-  //       Loading...
-  //     </div>
-  //   );
-  // }
-
-  //   if (wallet) {
-  //     return (
-  //       <div className=" flex gap-y-4 flex-col items-center justify-start min-h-screen">
-  //         <h1 className="text-5xl">My Lens App</h1>
-  //         <p>Wallet connected: {wallet.address}</p>
-  //         <LogoutButton />
-  // {/*
-  //         {profiles?.map((profile, index) => (
-  //           <Link href={`/profile/${profile.handle}`} key={index}>
-  //             <div className="my-14">
-  //               {profile.picture && profile.picture.__typename === "MediaSet" ? (
-  //                 <div>{profile.picture.original.url}</div>
-  //                 // <Image
-  //                 //   src={profile.picture.original.url}
-  //                 //   width="120"
-  //                 //   height="120"
-  //                 //   alt={profile.handle}
-  //                 // />
-  //               ) : (
-  //                 <div className="w-14 h-14 bg-slate-500	" />
-  //               )}
-  //               <h3 className="text-3xl my-4">{profile.handle}</h3>
-  //               <p className="text-xl">{profile.bio}</p>
-  //             </div>
-  //           </Link>
-  //         ))} */}
-  //       </div>
-  //     );
-  //   }
-
-  // return (
-  //   <>
-  //     <p>You are not logged-in, please connect your wallet</p>
-  //     <LoginButton />
-  //   </>
-  // );
   const loadMore = async () => {};
 
   return (
     <div>
-      {posts.length === 0 ? (
-        <div className=" text-center min-h-[90vh] flex items-center justify-center">
-          No posts found
-        </div>
-      ) : (
-        <InfiniteScroll
-          dataLength={[]?.length ?? 0}
-          scrollThreshold={0.99}
-          hasMore={true}
-          next={loadMore}
-          style={{
-            height: "100%",
-            // overflow: "auto",
-            overflow: "visible",
-            // "-webkit-overflow-scrolling": "none",
-          }}
-          loader={<InfiniteLoader />}
-        >
-          {posts &&
-            posts.map((post: any, id: number) => (
-              <div key={id}>
-                <Post
-                  pfp={
-                    post.profile.coverPicture !== null
-                      ? post.profile.coverPicture.original.url
-                      : image
-                  }
-                  name={post.profile.name}
-                  username={post.profile.handle}
-                  postMessage={
-                    post.metadata.description !== null
-                      ? post.metadata.description
-                      : post.metadata.content
-                  }
-                  // postImage={}
-                />
-              </div>
-            ))}
-        </InfiniteScroll>
-      )}
+      <div className=" text-center flex items-center justify-center">
+        <CreatePost publisher={activeProfileData} />
+      </div>
+      <div className="  md:w-7/12 mx-auto mt-8  border border-b-0 rounded-b-none border-borderPrimary rounded-2xl">
+        {posts.length === 0 ? (
+          <div className=" text-center min-h-[90vh] flex items-center justify-center">
+            No posts found
+          </div>
+        ) : (
+          <InfiniteScroll
+            dataLength={[]?.length ?? 0}
+            scrollThreshold={0.99}
+            hasMore={true}
+            next={loadMore}
+            style={{
+              height: "100%",
+              // overflow: "auto",
+              overflow: "visible",
+              // "-webkit-overflow-scrolling": "none",
+            }}
+            loader={<InfiniteLoader />}
+          >
+            {posts &&
+              posts.map((post: any, id: number) => (
+                <div key={id}>
+                  <Post
+                    pfp={
+                      post.profile.coverPicture !== null
+                        ? post.profile.coverPicture.original.url
+                        : image
+                    }
+                    name={post.profile.name}
+                    username={post.profile.handle}
+                    postMessage={
+                      post.metadata.description !== null
+                        ? post.metadata.description
+                        : post.metadata.content
+                    }
+                    // postImage={}
+                  />
+                </div>
+              ))}
+          </InfiniteScroll>
+        )}
+      </div>
     </div>
   );
 }

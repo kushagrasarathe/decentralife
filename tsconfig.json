@@ -23,7 +23,10 @@
       "@/*": ["./src/*"],
       "@components*": ["./src/components"],
       "@assets*": ["./src/assets*"],
-      "@apollo*": ["./src/apollo*"]
+      "@apollo*": ["./src/apollo*"],
+      "@context*": ["./src/context*"],
+      "@utils*": ["./src/utils*"],
+      "@gql*": ["./src/gql*"],
     },
     "noImplicitAny": false
   },

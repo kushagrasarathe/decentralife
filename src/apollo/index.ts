@@ -2,6 +2,11 @@ import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client";
 import { ProfileId } from "@lens-protocol/react-web";
+import {
+  CreatePostTypedDataDocument,
+  CreatePublicPostRequest,
+} from "@gql/generated";
+import { signedTypeData } from "@/utils/ethers.service";
 
 // interface Porps {
 //     ProfileId: ProfileId
@@ -11,6 +16,14 @@ const client = new ApolloClient({
   uri: "https://api-mumbai.lens.dev/",
   cache: new InMemoryCache(),
 });
+
+const AUTHENTICATE_USER = gql`
+  query Challenge($address: String!) {
+    challenge(request: { address: $address }) {
+      text
+    }
+  }
+`;
 
 const GET_PUBLICATIONS = gql`
   query Publications($profileId: ProfileId!) {
@@ -369,6 +382,54 @@ const GET_PUBLICATIONS = gql`
   }
 `;
 
+const CREATE_POST = gql`
+  mutation createPostTypedData($request: CreatePublicPostRequest!) {
+    createPostTypedData(request: $request) {
+      id
+      expiresAt
+      typedData {
+        types {
+          PostWithSig {
+            name
+            type
+          }
+        }
+        domain {
+          name
+          chainId
+          version
+          verifyingContract
+        }
+        value {
+          nonce
+          deadline
+          profileId
+          contentURI
+          collectModule
+          collectModuleInitData
+          referenceModule
+          referenceModuleInitData
+        }
+      }
+    }
+  }
+`;
+
+export const getAuthenticationChallenge = async (address: string) => {
+  return await client
+    .query({
+      query: AUTHENTICATE_USER,
+      variables: { profileId: address },
+    })
+    .then((data) => {
+      console.log(data);
+      // return data.data.publications.items;
+    })
+    .catch((err) => {
+      console.log("Error fetching data: ", err);
+    });
+};
+
 export const getPublications = async (profileId: any) => {
   return await client
     .query({
@@ -385,3 +446,33 @@ export const getPublications = async (profileId: any) => {
       console.log("Error fetching data: ", err);
     });
 };
+
+// export const createPostTypedData = async (request) => {
+//   const result = await client.mutate({
+//     mutation: CreatePostTypedDataDocument,
+//     variables: {
+//       request,
+//     },
+//   });
+
+//   return result.data!.createPostTypedData;
+// };
+
+// export const signCreatePostTypedData = async (
+//   request: CreatePublicPostRequest
+// ) => {
+//   const result = await createPostTypedData(request);
+//   console.log("create post: createPostTypedData", result);
+
+//   const typedData = result.typedData;
+//   console.log("create post: typedData", typedData);
+
+//   const signature = await signedTypeData(
+//     typedData.domain,
+//     typedData.types,
+//     typedData.value
+//   );
+//   console.log("create post: signature", signature);
+
+//   return { result, signature };
+// };

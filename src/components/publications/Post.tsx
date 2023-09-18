@@ -19,7 +19,7 @@ export default function Post({
 }: PostProps) {
   return (
     // rounded-xl
-    <div className=" flex items-start justify-between hover:cursor-pointer hover:bg-purplePrimary hover:bg-opacity-50 relative w-7/12 border-b mx-auto px-5 pb-8 pt-6  border-borderPrimary">
+    <div className=" flex items-start justify-between hover:cursor-pointer hover:bg-purplePrimary hover:bg-opacity-50 relative w- 7/12 border-b mx-auto px-5 pb-8 pt-6  border-borderPrimary">
       <div className="  w-10 h-10">
         <Image
           src={pfp}
