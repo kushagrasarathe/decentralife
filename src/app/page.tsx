@@ -155,7 +155,7 @@ function UseFollowInner({ activeProfile }: UseFollowInnerProps) {
     );
 
   return (
-    <div className=" md:w-7/12 mx-auto mt-12 ">
+    <div className=" md:w-7/12 mx-auto mt-12  border border-b-0 rounded-b-none border-borderPrimary rounded-2xl">
       {data.map((profile) => (
         <section
           key={profile.handle}
@@ -168,22 +168,6 @@ function UseFollowInner({ activeProfile }: UseFollowInnerProps) {
             handle={profile.handle}
             pfp={profile.picture}
           />
-          {/* <article>
-            <ProfilePicture picture={profile.picture} /> 
-
-            <p>Handle: {profile.handle}</p>
-            {profile?.name && <p>Name: {profile.name}</p>}
-            {profile?.bio && <p>Bio: {profile.bio}</p>}
-            <ul>
-              {Object.entries(profile.attributes).map(([key, value]) => (
-                <li key={key}>
-                  <b>{key}:</b>&nbsp;
-                  {value.toString() ?? null}
-                </li>
-              ))}
-            </ul>
-            {profile.invitedBy && <p>Invited by: {profile.invitedBy.handle}</p>}
-          </article> */}
 
           <FollowButton followee={profile} follower={activeProfile} />
         </section>
@@ -194,7 +178,7 @@ function UseFollowInner({ activeProfile }: UseFollowInnerProps) {
 
 export default function UseFollowAndUnfollow() {
   return (
-    <div>
+    <div className=" flex items-center justify-center min-h-[80vh]">
       <WhenLoggedInWithProfile>
         {({ profile }) => <UseFollowInner activeProfile={profile} />}
       </WhenLoggedInWithProfile>

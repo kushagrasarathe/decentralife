@@ -5,6 +5,7 @@ import {
   useWalletLogin,
   useWalletLogout,
 } from "@lens-protocol/react-web";
+import { usePathname, useRouter } from "next/navigation";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
@@ -32,6 +33,8 @@ export function LensContextProvider({ children }) {
 
   const { execute: logoutUser, isPending: isLogoutPending } = useWalletLogout();
 
+  const router = useRouter();
+  const currentPath = usePathname();
   const { isConnected } = useAccount();
   const { disconnectAsync } = useDisconnect();
 
@@ -42,6 +45,9 @@ export function LensContextProvider({ children }) {
   useEffect(() => {
     if (wallet) {
       setUserWalletAddress(wallet.address);
+    }
+    if (wallet && activeProfileData === null) {
+      router.push("/create");
     }
   }, []);
 

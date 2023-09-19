@@ -10,7 +10,7 @@ export function UnauthenticatedFallback({
 }: UnauthenticatedFallbackProps) {
   return (
     <WhenLoggedOut>
-      <div>
+      <div className=" flex items-center justify-center flex-col gap-3">
         <p>{message ?? "Log in to view this example."}</p>
         <LoginButton />
       </div>

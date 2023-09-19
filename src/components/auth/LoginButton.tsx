@@ -7,6 +7,7 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 import { WhenLoggedInWithProfile } from "./WhenLoggedInWithProfile";
 import { LogoutButton } from "./LogoutButton";
 import { WhenLoggedOut } from "./WhenLoggedOut";
+import { Button } from "@material-tailwind/react";
 
 export function LoginButton({ handle }: { handle?: string }) {
   const {
@@ -58,9 +59,9 @@ export function LoginButton({ handle }: { handle?: string }) {
       </WhenLoggedInWithProfile>
 
       <WhenLoggedOut>
-        <button onClick={onLoginClick} disabled={isLoginPending}>
+        <Button variant="gradient" color="white" onClick={onLoginClick} disabled={isLoginPending}>
           <strong>Log in</strong>
-        </button>
+        </Button>
       </WhenLoggedOut>
     </>
   );

@@ -31,7 +31,7 @@ export default function MyProfile() {
     // console.log(activeProfileData.id);
     const fetchPosts = async () => {
       // 0x9185
-      if (activeProfileData.id) {
+      if (activeProfileData.id !== null) {
         const publications = await getPublications(activeProfileData.id);
         if (publications !== undefined) {
           setPosts(publications);

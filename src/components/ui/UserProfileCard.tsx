@@ -17,7 +17,7 @@ interface PostProps {
 export default function UserProfile({ id, pfp, name, handle, bio }: PostProps) {
   // @ts-ignore
   const { activeProfileData } = useAuth();
-  console.log(pfp);
+  // console.log(pfp);
 
   return (
     // rounded-xl
@@ -47,20 +47,6 @@ export default function UserProfile({ id, pfp, name, handle, bio }: PostProps) {
               @{handle}
             </span>
           </div>
-          {/* <FollowUser
-            follower={activeProfileData.id}
-            followee={id}
-          /> */}
-          {/* <div>
-            <Button
-              // variant="outlined"
-              color="white"
-            >
-              Follow
-            </Button> 
-          </div>
-            */}
-          {/* <UseFollowAndUnfollow /> */}
         </div>
         <div className=" font-[500] text-start">{bio}</div>
       </div>

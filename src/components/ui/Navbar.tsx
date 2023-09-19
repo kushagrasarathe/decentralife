@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <div className=" flex items-center justify-around py-4">
+    <div className=" flex items-center justify-between w-8/12 mx-auto py-4">
       <Link href={"/"}>
         <h1 className="  cursor-pointer font-bold sm:text-3xl text-gray-300 text-2xl leading-none text-center ">
           {/* block */}
@@ -23,7 +23,12 @@ export default function Navbar() {
           </span>
         </h1>
       </Link>
-      <AuthModal />
+      <div className=" flex items-center gap-x-3 ">
+        <Link className="  text-base font-semibold" href={"/"}>Home</Link>
+        <Link className="  text-base font-semibold" href={"/create"}>Create Profile</Link>
+        <Link className="  text-base font-semibold" href={"/myprofile"}>My Profile</Link>
+        <AuthModal />
+      </div>
     </div>
   );
 }
