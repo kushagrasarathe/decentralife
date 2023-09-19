@@ -3,10 +3,11 @@ import { Button } from "@material-tailwind/react";
 import Image from "next/image";
 import FollowUser from "./FollowUser";
 import { useAuth } from "@/context/LensContext";
-import { Profile } from "@lens-protocol/react-web";
+import { Profile, ProfileId } from "@lens-protocol/react-web";
+import UseFollowAndUnfollow from "@/app/page";
 
 interface PostProps {
-  id: Profile;
+  id: ProfileId;
   pfp?: string | any;
   name?: string | null;
   handle?: string;
@@ -16,19 +17,27 @@ interface PostProps {
 export default function UserProfile({ id, pfp, name, handle, bio }: PostProps) {
   // @ts-ignore
   const { activeProfileData } = useAuth();
-  // console.log(activeProfileData);
+  console.log(pfp);
 
   return (
     // rounded-xl
-    <div className=" flex items-start justify-between hover:cursor-pointer hover:bg-purplePrimary hover:bg-opacity-50 relative w- 7/12 border-b mx-auto px-5 pb-8 pt-6  border-borderPrimary">
-      <div className="  w-10 h-10">
-        <Image
+    <div className=" min-h-[150px] flex items-start justify-between relative w- 7/12 mx-auto px-5 pb-8 pt- w-full   ">
+      <div className="  w-10 h-10 flex items-center justify-center">
+        {pfp ? (
+          <img
+            src={pfp && pfp.original.url}
+            className=" rounded-full  w-full h-full"
+          />
+        ) : (
+          <div className=" rounded-full bg-gradient-to-b from-indigo-400 to-purple-400  w-full h-full "></div>
+        )}
+        {/* <Image
           src={pfp ? pfp : sample}
           width={100}
           height={100}
           alt="pfp"
           className=" rounded-full h-full object-cover object-center"
-        />
+        /> */}
       </div>
       <div className="gap-y-4 flex items-start mx-auto w-full pl-4 pr-1 justify-start flex-col">
         <div className=" flex items-center justify-between w-full">
@@ -38,7 +47,10 @@ export default function UserProfile({ id, pfp, name, handle, bio }: PostProps) {
               @{handle}
             </span>
           </div>
-          <FollowUser follower={activeProfileData.id} followee={id} />
+          {/* <FollowUser
+            follower={activeProfileData.id}
+            followee={id}
+          /> */}
           {/* <div>
             <Button
               // variant="outlined"
@@ -48,6 +60,7 @@ export default function UserProfile({ id, pfp, name, handle, bio }: PostProps) {
             </Button> 
           </div>
             */}
+          {/* <UseFollowAndUnfollow /> */}
         </div>
         <div className=" font-[500] text-start">{bio}</div>
       </div>

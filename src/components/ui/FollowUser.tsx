@@ -2,20 +2,22 @@ import React from "react";
 
 import {
   Profile,
+  ProfileOwnedByMe,
   UseFollowArgs,
   useFollow,
   useUnfollow,
 } from "@lens-protocol/react-web";
 import { Button } from "@material-tailwind/react";
 
-type ProfileFollowProps = {
-  profile: Profile;
+type FollowButtonProps = {
+  follower: ProfileOwnedByMe;
+  followee: Profile;
 };
 
-export default function FollowUser({ followee, follower }: UseFollowArgs) {
+export default function FollowUser({ followee, follower }: FollowButtonProps) {
   const {
     execute: follow,
-    error,
+    error: followError,
     isPending: isFollowing,
   } = useFollow({
     followee,
@@ -29,28 +31,31 @@ export default function FollowUser({ followee, follower }: UseFollowArgs) {
     followee,
     follower,
   });
-  
 
-  if (followee.followStatus?.isFollowedByMe) {
+  if (followee.followStatus === null) {
+    return null;
+  }
+
+  if (followError) {
+    return <p>{followError.message}</p>;
+  }
+
+  if (followee.isFollowedByMe) {
     return (
-      <Button
-        color="white"
-        variant="outlined"
-        onClick={unfollow}
-        disabled={isUnfollowing}
-      >
-        {isUnfollowing ? "Unfollowing..." : "Following"}
-      </Button>
+      <>
+        <button onClick={unfollow} disabled={isUnfollowing}>
+          Unfollow
+        </button>
+        {unfollowError && <p>{unfollowError.message}</p>}
+      </>
     );
   }
 
-  if (error) {
-    return <p>{error.message}</p>;
-  }
-
   return (
-    <Button color="white" onClick={follow} disabled={isFollowing}>
-      {isFollowing ? "Following..." : "Follow"}
-    </Button>
+    <>
+      <Button color="white" onClick={follow} disabled={isFollowing}>
+        {isFollowing ? "Following..." : "Follow"}
+      </Button>
+    </>
   );
 }
