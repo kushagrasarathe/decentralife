@@ -28,11 +28,14 @@ export default function MyProfile() {
   const { activeProfileData } = useAuth();
 
   useEffect(() => {
+    // console.log(activeProfileData.id);
     const fetchPosts = async () => {
       // 0x9185
-      const publications = await getPublications("0x9185");
-      if (publications !== undefined) {
-        setPosts(publications);
+      if (activeProfileData.id) {
+        const publications = await getPublications(activeProfileData.id);
+        if (publications !== undefined) {
+          setPosts(publications);
+        }
       }
     };
     fetchPosts();

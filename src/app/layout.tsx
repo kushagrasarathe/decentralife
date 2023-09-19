@@ -47,7 +47,7 @@ export default function RootLayout({
       <WagmiConfig config={config}>
         <LensProvider config={lensConfig}>
           <LensContextProvider>
-            <body className="min-h-screen bg-gradient-to-b from-purplePrimary to-black">
+            <body className="min-h-screen bg-gradient-to-b from-purplePrimary to-black bg-fixed">
               <Navbar />
               <Toaster position="bottom-center" />
               <div>{children}</div>

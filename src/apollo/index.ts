@@ -411,7 +411,7 @@ export const getAuthenticationChallenge = async (address: string) => {
       variables: { profileId: address },
     })
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       // return data.data.publications.items;
     })
     .catch((err) => {
@@ -426,42 +426,10 @@ export const getPublications = async (profileId: any) => {
       variables: { profileId: profileId },
     })
     .then((data) => {
-      // console.log("getUserStats data: ", data.data.userData);
-      //   return data.data.userData;
-      console.log(data.data.publications.items);
+      // console.log(data.data.publications.items);
       return data.data.publications.items;
     })
     .catch((err) => {
       console.log("Error fetching data: ", err);
     });
 };
-
-// export const createPostTypedData = async (request) => {
-//   const result = await client.mutate({
-//     mutation: CreatePostTypedDataDocument,
-//     variables: {
-//       request,
-//     },
-//   });
-
-//   return result.data!.createPostTypedData;
-// };
-
-// export const signCreatePostTypedData = async (
-//   request: CreatePublicPostRequest
-// ) => {
-//   const result = await createPostTypedData(request);
-//   console.log("create post: createPostTypedData", result);
-
-//   const typedData = result.typedData;
-//   console.log("create post: typedData", typedData);
-
-//   const signature = await signedTypeData(
-//     typedData.domain,
-//     typedData.types,
-//     typedData.value
-//   );
-//   console.log("create post: signature", signature);
-
-//   return { result, signature };
-// };

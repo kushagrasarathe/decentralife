@@ -16,7 +16,7 @@ interface PostProps {
 export default function UserProfile({ id, pfp, name, handle, bio }: PostProps) {
   // @ts-ignore
   const { activeProfileData } = useAuth();
-  console.log(activeProfileData);
+  // console.log(activeProfileData);
 
   return (
     // rounded-xl
